@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: send-alb-metrics-to-datadog
+
+Globals:
+  Function:
+    Timeout: 3600
+
+Resources:
+  MainFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      Runtime: go1.x
+      FunctionName: main
+      MemorySize: 1024
