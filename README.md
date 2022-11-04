@@ -45,10 +45,3 @@ In this case, you need to specify environment variable:
 
 - LOCAL_INVOKE_GZ_PATH: Path to gz log file.
 - DD_API_KEY: Datadog API key.
-
-
-
-
-
-
-
