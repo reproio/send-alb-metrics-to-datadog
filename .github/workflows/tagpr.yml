@@ -5,6 +5,8 @@ on:
 jobs:
   tagpr:
     runs-on: ubuntu-latest
+    outputs:
+      tagpr-tag: ${{ steps.run-tagpr.outputs.tag }}
     steps:
       - uses: actions/checkout@v3
       - id: tagpr
@@ -14,7 +16,7 @@ jobs:
 
   release:
     needs: tagpr
-    if: "needs.tagpr.outputs.tagpr-tag != ''"
+    if: needs.tagpr.outputs.tagpr-tag != ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
