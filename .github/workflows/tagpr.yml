@@ -11,8 +11,28 @@ jobs:
         uses: Songmu/tagpr@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ./.github/actions/release
+
+  release:
+    needs: tagpr
+    if: "needs.tagpr.outputs.tagpr-tag != ''"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: docker/metadata-action@v3
+        id: meta
         with:
-          tag: ${{ steps.tagpr.outputs.tag }}
-          cr-pat: ${{ secrets.CR_PAT }}
-        if: "steps.tagpr.outputs.tag != ''"
+          images: ghcr.io/reproio/send-alb-metrics-to-datadog
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: reproiobot
+          password: ${{ secrets.CR_PAT }}
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
