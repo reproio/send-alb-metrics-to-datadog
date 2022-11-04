@@ -13,5 +13,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./.github/actions/release
         with:
+          cr-pat: ${{ secrets.CR_PAT }}
           tag: ${{ steps.tagpr.outputs.tag }}
           if: "steps.tagpr.outputs.tag != ''"

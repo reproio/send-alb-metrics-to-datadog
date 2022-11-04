@@ -1,6 +1,11 @@
 name: release
-
 description: release a new version of the container image
+
+inputs:
+  cr-pat:
+    description: Personal access token for the container registry
+    required: true
+
 runs:
   using: composite
   steps:
@@ -17,7 +22,7 @@ runs:
       with:
         registry: ghcr.io
         username: reproiobot
-        password: ${{ secrets.CR_PAT }}
+        password: ${{ inputs.cr-pat }}
     - uses: docker/build-push-action@v3
       with:
         context: .
