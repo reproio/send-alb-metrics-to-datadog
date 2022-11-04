@@ -7,6 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Songmu/tagpr@v1
+      - id: tagpr
+        uses: Songmu/tagpr@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/workflows/release.yml
+        with:
+          tag: ${{ steps.tagpr.outputs.tag }}
+          if: "steps.tagpr.outputs.tag != ''"
