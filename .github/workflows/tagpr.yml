@@ -14,5 +14,5 @@ jobs:
       - uses: ./.github/actions/release
         with:
           tag: ${{ steps.tagpr.outputs.tag }}
-          if: "steps.tagpr.outputs.tag != ''"
           cr-pat: ${{ secrets.CR_PAT }}
+        if: "steps.tagpr.outputs.tag != ''"
