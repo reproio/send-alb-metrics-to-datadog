@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.12](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.11...v0.0.12) - 2022-11-04
+- upadte by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/25
+
 ## [v0.0.11](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.10...v0.0.11) - 2022-11-04
 - upadte by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/23
 
