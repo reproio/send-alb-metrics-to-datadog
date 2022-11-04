@@ -9,7 +9,7 @@ jobs:
       tagpr-tag: ${{ steps.run-tagpr.outputs.tag }}
     steps:
       - uses: actions/checkout@v3
-      - id: tagpr
+      - id: run-tagpr
         uses: Songmu/tagpr@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
