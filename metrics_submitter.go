@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	v1 "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
-	"github.com/DataDog/datadog-api-client-go/api/v2/datadog"
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 	"os"
@@ -27,30 +28,29 @@ func NewMetricsSubmitter(requestCountMetricName string, targetProcessingTimeMetr
 func (p *MetricsSubmitter) Submit(metrics map[string]*Metric, s3ObjectKey string) error {
 	var eg errgroup.Group
 
-	// v1ctx and v1client are used to submit distribution points api. This api is defined by v1, so need client for it.
-	v1ctx := v1.NewDefaultContext(context.Background())
-	v1client := v1.NewAPIClient(v1.NewConfiguration())
-
-	// v2ctx and v2client are used to submit metrics api. This api is defined by v1 and v2, but v1 api is deprecated.
-	v2ctx := datadog.NewDefaultContext(context.Background())
-	v2client := datadog.NewAPIClient(datadog.NewConfiguration())
+	ctx := datadog.NewDefaultContext(context.Background())
+	apiClient := datadog.NewAPIClient(datadog.NewConfiguration())
+	// v1Api is used to submit distribution points api. This api is defined by v1, so need client for it.
+	v1Api := datadogV1.NewMetricsApi(apiClient)
+	// v2Api is used to submit metrics api. This api is defined by v1 and v2, but v1 api is deprecated.
+	v2Api := datadogV2.NewMetricsApi(apiClient)
 
 	for _, metric := range metrics {
-		payload := datadog.MetricPayload{
-			Series: []datadog.MetricSeries{
+		metricsPayload := datadogV2.MetricPayload{
+			Series: []datadogV2.MetricSeries{
 				p.requestCountSeries(metric, s3ObjectKey),
 			},
 		}
 
-		v1payload := v1.DistributionPointsPayload{}
+		distributionPointPayload := datadogV1.DistributionPointsPayload{}
 		s, err := p.targetProcessingTime(metric)
 		if err != nil {
 			return err
 		}
-		v1payload.Series = append(v1payload.Series, s...)
+		distributionPointPayload.Series = append(distributionPointPayload.Series, s...)
 
 		eg.Go(func() error {
-			_, r, err := v1client.MetricsApi.SubmitDistributionPoints(v1ctx, v1payload, *v1.NewSubmitDistributionPointsOptionalParameters().WithContentEncoding(v1.DISTRIBUTIONPOINTSCONTENTENCODING_DEFLATE))
+			_, r, err := v1Api.SubmitDistributionPoints(ctx, distributionPointPayload, *datadogV1.NewSubmitDistributionPointsOptionalParameters().WithContentEncoding(datadogV1.DISTRIBUTIONPOINTSCONTENTENCODING_DEFLATE))
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.SubmitDistributionPoints`: %v\n", err)
 				fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -60,7 +60,7 @@ func (p *MetricsSubmitter) Submit(metrics map[string]*Metric, s3ObjectKey string
 		})
 
 		eg.Go(func() error {
-			_, r, err := v2client.MetricsApi.SubmitMetrics(v2ctx, payload, *datadog.NewSubmitMetricsOptionalParameters())
+			_, r, err := v2Api.SubmitMetrics(ctx, metricsPayload, *datadogV2.NewSubmitMetricsOptionalParameters())
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.SubmitMetrics`: %v\n", err)
 				fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -77,16 +77,16 @@ func (p *MetricsSubmitter) Submit(metrics map[string]*Metric, s3ObjectKey string
 	return nil
 }
 
-func (p *MetricsSubmitter) requestCountSeries(metric *Metric, s3ObjectKey string) datadog.MetricSeries {
-	var points []datadog.MetricPoint
+func (p *MetricsSubmitter) requestCountSeries(metric *Metric, s3ObjectKey string) datadogV2.MetricSeries {
+	var points []datadogV2.MetricPoint
 	for timestamp, count := range metric.RequestCountMap {
-		points = append(points, datadog.MetricPoint{
+		points = append(points, datadogV2.MetricPoint{
 			Timestamp: timestamp.PtrInt64(),
 			Value:     count.PtrFloat64(),
 		})
 	}
-	series := datadog.NewMetricSeries(p.requestCountMetricName, points)
-	series.SetType(datadog.METRICINTAKETYPE_COUNT)
+	series := datadogV2.NewMetricSeries(p.requestCountMetricName, points)
+	series.SetType(datadogV2.METRICINTAKETYPE_COUNT)
 	series.SetInterval(60)
 	series.SetUnit("request")
 	tags := []string{
@@ -105,18 +105,18 @@ func (p *MetricsSubmitter) requestCountSeries(metric *Metric, s3ObjectKey string
 	return *series
 }
 
-func (p *MetricsSubmitter) targetProcessingTime(metric *Metric) ([]v1.DistributionPointsSeries, error) {
-	seriesSlice := make([]v1.DistributionPointsSeries, 1)
-	points := make([][]v1.DistributionPointItem, 0, len(metric.TargetProcessingTimesMap))
+func (p *MetricsSubmitter) targetProcessingTime(metric *Metric) ([]datadogV1.DistributionPointsSeries, error) {
+	seriesSlice := make([]datadogV1.DistributionPointsSeries, 1)
+	points := make([][]datadogV1.DistributionPointItem, 0, len(metric.TargetProcessingTimesMap))
 
 	for timestamp, times := range metric.TargetProcessingTimesMap {
-		points = append(points, []v1.DistributionPointItem{
+		points = append(points, []datadogV1.DistributionPointItem{
 			{DistributionPointTimestamp: timestamp.PtrFloat64()},
 			{DistributionPointData: times.Float64()},
 		})
 	}
 
-	series := v1.NewDistributionPointsSeries(p.targetProcessingTimeMetricName, points)
+	series := datadogV1.NewDistributionPointsSeries(p.targetProcessingTimeMetricName, points)
 	tags := []string{
 		fmt.Sprintf("elb:%s", metric.Elb),
 		fmt.Sprintf("target_group_arn:%s", metric.TargetGroupArn),
