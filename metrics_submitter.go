@@ -59,15 +59,17 @@ func (p *MetricsSubmitter) Submit(metrics map[string]*Metric, s3ObjectKey string
 			return nil
 		})
 
-		eg.Go(func() error {
-			_, r, err := v2Api.SubmitMetrics(ctx, metricsPayload, *datadogV2.NewSubmitMetricsOptionalParameters())
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.SubmitMetrics`: %v\n", err)
-				fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-				return err
-			}
-			return nil
-		})
+		if p.requestCountMetricName != "" {
+			eg.Go(func() error {
+				_, r, err := v2Api.SubmitMetrics(ctx, metricsPayload, *datadogV2.NewSubmitMetricsOptionalParameters())
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.SubmitMetrics`: %v\n", err)
+					fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+					return err
+				}
+				return nil
+			})
+		}
 	}
 
 	if err := eg.Wait(); err != nil {
