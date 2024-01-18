@@ -1,8 +1,8 @@
 package main
 
 import (
-	v1 "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
-	"github.com/DataDog/datadog-api-client-go/api/v2/datadog"
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	"reflect"
 	"testing"
 )
@@ -49,7 +49,7 @@ func TestMetricsSubmitter_loadBalancerIpAddress(t *testing.T) {
 }
 
 func TestMetricsSubmitter_targetProcessingTime(t *testing.T) {
-	var typeVar v1.DistributionPointsType = v1.DISTRIBUTIONPOINTSTYPE_DISTRIBUTION
+	var typeVar datadogV1.DistributionPointsType = datadogV1.DISTRIBUTIONPOINTSTYPE_DISTRIBUTION
 	type fields struct {
 		RequestCountMetricName         string
 		TargetProcessingTimeMetricName string
@@ -62,7 +62,7 @@ func TestMetricsSubmitter_targetProcessingTime(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    []v1.DistributionPointsSeries
+		want    []datadogV1.DistributionPointsSeries
 		wantErr bool
 	}{
 		{
@@ -84,10 +84,10 @@ func TestMetricsSubmitter_targetProcessingTime(t *testing.T) {
 					TargetGroupArn:   "arn",
 				},
 			},
-			want: []v1.DistributionPointsSeries{
-				v1.DistributionPointsSeries{
+			want: []datadogV1.DistributionPointsSeries{
+				datadogV1.DistributionPointsSeries{
 					Metric: "target_processing_time",
-					Points: [][]v1.DistributionPointItem{
+					Points: [][]datadogV1.DistributionPointItem{
 						{
 							{DistributionPointTimestamp: datadog.PtrFloat64(1)},
 							{DistributionPointData: &[]float64{1, 2}},
