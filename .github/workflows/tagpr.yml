@@ -26,6 +26,17 @@ jobs:
           registry: ghcr.io
           username: reproiobot
           password: ${{ secrets.CR_PAT }}
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v3
         with:
           context: .
