@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.0.2](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.1...v0.0.2) - 2024-01-19
+- chore: add goreleaser to create assets when tagging by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/32
+- chore: upgrade datadog-api-client-go by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/34
+- chore: add steps for goreleaser by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/35
+- chore: Use secrets.GITHUB_TOKEN instead of personal access token by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/37
+- fix: build failure by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/39
+
 ## [v0.0.3](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.2...v0.0.3) - 2024-01-19
 - chore: Use secrets.GITHUB_TOKEN instead of personal access token by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/37
 
