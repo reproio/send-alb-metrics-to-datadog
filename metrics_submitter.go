@@ -43,7 +43,7 @@ func (p *MetricsSubmitter) Submit(metrics map[string]*Metric, s3ObjectKey string
 		}
 
 		distributionPointPayload := datadogV1.DistributionPointsPayload{}
-		s, err := p.targetProcessingTime(metric)
+		s, err := p.targetProcessingTime(metric, s3ObjectKey)
 		if err != nil {
 			return err
 		}
@@ -59,15 +59,17 @@ func (p *MetricsSubmitter) Submit(metrics map[string]*Metric, s3ObjectKey string
 			return nil
 		})
 
-		eg.Go(func() error {
-			_, r, err := v2Api.SubmitMetrics(ctx, metricsPayload, *datadogV2.NewSubmitMetricsOptionalParameters())
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.SubmitMetrics`: %v\n", err)
-				fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-				return err
-			}
-			return nil
-		})
+		if p.requestCountMetricName != "" {
+			eg.Go(func() error {
+				_, r, err := v2Api.SubmitMetrics(ctx, metricsPayload, *datadogV2.NewSubmitMetricsOptionalParameters())
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.SubmitMetrics`: %v\n", err)
+					fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+					return err
+				}
+				return nil
+			})
+		}
 	}
 
 	if err := eg.Wait(); err != nil {
@@ -105,7 +107,7 @@ func (p *MetricsSubmitter) requestCountSeries(metric *Metric, s3ObjectKey string
 	return *series
 }
 
-func (p *MetricsSubmitter) targetProcessingTime(metric *Metric) ([]datadogV1.DistributionPointsSeries, error) {
+func (p *MetricsSubmitter) targetProcessingTime(metric *Metric, s3ObjectKey string) ([]datadogV1.DistributionPointsSeries, error) {
 	seriesSlice := make([]datadogV1.DistributionPointsSeries, 1)
 	points := make([][]datadogV1.DistributionPointItem, 0, len(metric.TargetProcessingTimesMap))
 
@@ -125,6 +127,7 @@ func (p *MetricsSubmitter) targetProcessingTime(metric *Metric) ([]datadogV1.Dis
 		fmt.Sprintf("elb_status_code:%s", metric.ElbStatusCode),
 		fmt.Sprintf("target_status_code:%s", metric.TargetStatusCode),
 		fmt.Sprintf("target_status_code_group:%s", metric.TargetStatusCodeGroup()),
+		fmt.Sprintf("ip_address:%s", p.loadBalancerIpAddress(s3ObjectKey)),
 	}
 	for _, tag := range p.customTags {
 		tags = append(tags, fmt.Sprintf("%s:%s", tag.Name, tag.Key()))

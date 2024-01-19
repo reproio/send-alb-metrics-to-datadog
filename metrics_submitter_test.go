@@ -105,6 +105,7 @@ func TestMetricsSubmitter_targetProcessingTime(t *testing.T) {
 						"elb_status_code:200",
 						"target_status_code:200",
 						"target_status_code_group:2xx",
+						"ip_address:172.160.001.192",
 					},
 					Type: &typeVar,
 				},
@@ -119,7 +120,7 @@ func TestMetricsSubmitter_targetProcessingTime(t *testing.T) {
 				targetProcessingTimeMetricName: tt.fields.TargetProcessingTimeMetricName,
 				customTags:                     tt.fields.CustomTags,
 			}
-			got, err := p.targetProcessingTime(tt.args.metric)
+			got, err := p.targetProcessingTime(tt.args.metric, "s3://my-bucket/my-prefix/AWSLogs/123456789012/elasticloadbalancing/us-east-2/2022/05/01/123456789012_elasticloadbalancing_us-east-2_app.my-loadbalancer.1234567890abcdef_20220215T2340Z_172.160.001.192_20sg8hgm.log.gz")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("targetProcessingTime() error = %v, wantErr %v", err, tt.wantErr)
 				return
