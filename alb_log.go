@@ -79,6 +79,7 @@ var requestPathRe = regexp.MustCompile(`(?P<method>.*) (?P<protocol>.*)://(?P<ho
 type PathTransformingRule struct {
 	Prefix      string
 	Suffix      string
+	Regexp      *regexp.Regexp
 	Transformed string
 }
 
@@ -96,6 +97,14 @@ func (r *AlbLogRecord) requestPath(rules []PathTransformingRule) (string, error)
 	}
 
 	for _, rule := range rules {
+		if rule.Regexp != nil {
+			if rule.Regexp.MatchString(uri) {
+				match = true
+				transformed = rule.Transformed
+				break
+			}
+		}
+
 		if rule.Prefix != "" && rule.Suffix != "" {
 			if strings.HasPrefix(uri, rule.Prefix) && strings.HasSuffix(uri, rule.Suffix) {
 				match = true

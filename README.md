@@ -19,6 +19,8 @@ path_transforming_rules:
   - prefix: /api/v1/hoge
     suffix: /start
     transformed: /api/v1/hoge/$id/start
+  - regexp: /api/v1/hoge/[^/]+/stop
+    transformed: /api/v1/hoge/$id/stop
 ```
 
 Example `Dockerfile` :
