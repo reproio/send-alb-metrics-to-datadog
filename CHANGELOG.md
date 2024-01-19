@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.3](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.2...v0.0.3) - 2024-01-19
+- fix: need to fetch tags to use goreleaser by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/42
+
 ## [v0.0.2](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.1...v0.0.2) - 2024-01-19
 - chore: add goreleaser to create assets when tagging by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/32
 - chore: upgrade datadog-api-client-go by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/34
