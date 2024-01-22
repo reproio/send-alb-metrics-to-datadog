@@ -2,6 +2,7 @@ package main
 
 import (
 	"reflect"
+	"regexp"
 	"testing"
 	"time"
 )
@@ -247,6 +248,22 @@ func TestAlbLogRecord_RequestPath(t *testing.T) {
 					{
 						Prefix:      "/foo",
 						Suffix:      "bar",
+						Transformed: "/foo/$id/bar",
+					},
+				},
+			},
+			fields: fields{
+				Request: "POST https://example.com:443/foo/aaa/bar HTTP/1.1",
+			},
+			want:    "/foo/$id/bar",
+			wantErr: false,
+		},
+		{
+			name: "regexp",
+			args: args{
+				paths: []PathTransformingRule{
+					{
+						Regexp:      regexp.MustCompile(`^/foo/([^/]+)/bar$`),
 						Transformed: "/foo/$id/bar",
 					},
 				},
