@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.0.4](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.3...v0.0.4) - 2024-01-22
+- support disabling to submit request count metrics by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/44
+- feat: support regexp to transform uri by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/45
+
 ## [v0.0.3](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.2...v0.0.3) - 2024-01-19
 - fix: need to fetch tags to use goreleaser by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/42
 
