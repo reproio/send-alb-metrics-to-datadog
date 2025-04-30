@@ -112,6 +112,53 @@ func TestMetricsSubmitter_targetProcessingTime(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "TargetStatusCode is -",
+			fields: fields{
+				TargetProcessingTimeMetricName: "target_processing_time",
+			},
+			args: args{
+				metric: &Metric{
+					TargetProcessingTimesMap: map[Timestamp]TargetProcessingTimes{
+						Timestamp(1): {-1},
+						Timestamp(2): {-1},
+					},
+					Method:           "GET",
+					Path:             "/",
+					ElbStatusCode:    "460",
+					TargetStatusCode: "-",
+					Elb:              "elb",
+					TargetGroupArn:   "arn",
+				},
+			},
+			want: []datadogV1.DistributionPointsSeries{
+				datadogV1.DistributionPointsSeries{
+					Metric: "target_processing_time",
+					Points: [][]datadogV1.DistributionPointItem{
+						{
+							{DistributionPointTimestamp: datadog.PtrFloat64(1)},
+							{DistributionPointData: &[]float64{-1}},
+						},
+						{
+							{DistributionPointTimestamp: datadog.PtrFloat64(2)},
+							{DistributionPointData: &[]float64{-1}},
+						},
+					},
+					Tags: []string{
+						"elb:elb",
+						"target_group_arn:arn",
+						"path:/",
+						"method:GET",
+						"elb_status_code:460",
+						"target_status_code:-",
+						"target_status_code_group:-",
+						"ip_address:172.160.001.192",
+					},
+					Type: &typeVar,
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

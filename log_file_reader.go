@@ -118,7 +118,9 @@ type Metric struct {
 }
 
 func (m *Metric) TargetStatusCodeGroup() string {
-	code := ""
+	// TargetStatusCode is - when the target does not send a response
+	// see: https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-access-logs.html
+	code := "-"
 	switch {
 	case strings.HasPrefix(m.TargetStatusCode, "1"):
 		code = "1xx"
