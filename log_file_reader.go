@@ -55,6 +55,8 @@ func (p *LogFileReader) Read(r io.Reader) (map[string]*Metric, error) {
 				metric.RequestCountMap[r.Timestamp()] = RequestCount(1)
 			}
 
+			// Note: TargetProcessingTime is -1 when load balancer can't dispatch request to target or target doesn't respond until idle timeout.
+			// see: https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-access-logs.html
 			targetProcessingTime := TargetProcessingTime(r.TargetProcessingTime)
 			if _, exist := metric.RequestCountMap[r.Timestamp()]; exist {
 				metric.TargetProcessingTimesMap[r.Timestamp()] = append(metric.TargetProcessingTimesMap[r.Timestamp()], targetProcessingTime)
