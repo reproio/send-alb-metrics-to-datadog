@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.0.5](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.4...v0.0.5) - 2025-05-01
+- Configure Renovate by @renovate in https://github.com/reproio/send-alb-metrics-to-datadog/pull/1
+- Pin GitHub Actions by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/47
+- Set target status code group to "-" by @akihiro17 in https://github.com/reproio/send-alb-metrics-to-datadog/pull/61
+
 ## [v0.0.4](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.3...v0.0.4) - 2024-01-22
 - support disabling to submit request count metrics by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/44
 - feat: support regexp to transform uri by @takaishi in https://github.com/reproio/send-alb-metrics-to-datadog/pull/45
