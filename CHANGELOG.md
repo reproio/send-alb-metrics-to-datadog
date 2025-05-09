@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.6](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.5...v0.0.6) - 2025-05-09
+- set TargetProcessingTime to -1 by @akihiro17 in https://github.com/reproio/send-alb-metrics-to-datadog/pull/62
+
 ## [v0.0.5](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.4...v0.0.5) - 2025-05-01
 - Configure Renovate by @renovate in https://github.com/reproio/send-alb-metrics-to-datadog/pull/1
 - Pin GitHub Actions by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/47
