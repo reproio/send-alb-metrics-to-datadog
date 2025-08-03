@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.18.0
 	github.com/aws/aws-lambda-go v1.29.0
-	github.com/aws/aws-sdk-go v1.40.2
+	github.com/aws/aws-sdk-go v1.55.8
 	github.com/pkg/errors v0.9.1
 	golang.org/x/exp v0.0.0-20220516143420-24438e51023a
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
