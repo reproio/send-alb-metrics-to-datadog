@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"slices"
 	"io"
+	"slices"
 	"strings"
 )
 
