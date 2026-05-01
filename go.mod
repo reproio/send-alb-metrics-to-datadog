@@ -1,6 +1,6 @@
 module github.com/reproio/aws-lambda-functions/functions/send-alb-metrics-to-datadog
 
-go 1.22
+go 1.26.2
 
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.59.0
