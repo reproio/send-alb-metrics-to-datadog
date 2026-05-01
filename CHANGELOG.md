@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.1.0](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.6...v0.1.0) - 2026-05-01
+- Update module github.com/aws/aws-lambda-go to v1.54.0 by @renovate[bot] in https://github.com/reproio/send-alb-metrics-to-datadog/pull/54
+- Update module github.com/DataDog/datadog-api-client-go/v2 to v2.59.0 by @renovate[bot] in https://github.com/reproio/send-alb-metrics-to-datadog/pull/56
+- Update actions/checkout action to v6 by @renovate[bot] in https://github.com/reproio/send-alb-metrics-to-datadog/pull/70
+- Group GitHub Actions dependency updates into a single PR by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/71
+- Group Go version updates into a single PR by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/72
+- Update github actions by @renovate[bot] in https://github.com/reproio/send-alb-metrics-to-datadog/pull/73
+- Update github actions (major) by @renovate[bot] in https://github.com/reproio/send-alb-metrics-to-datadog/pull/74
+- Upgrade Go to 1.26.2 and switch Docker base image to trixie by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/75
+- Update module golang.org/x/sync to v0.20.0 by @renovate[bot] in https://github.com/reproio/send-alb-metrics-to-datadog/pull/57
+- Migrate S3 client from aws-sdk-go v1 to aws-sdk-go-v2 by @okkez in https://github.com/reproio/send-alb-metrics-to-datadog/pull/76
+
 ## [v0.0.6](https://github.com/reproio/send-alb-metrics-to-datadog/compare/v0.0.5...v0.0.6) - 2025-05-09
 - set TargetProcessingTime to -1 by @akihiro17 in https://github.com/reproio/send-alb-metrics-to-datadog/pull/62
 
