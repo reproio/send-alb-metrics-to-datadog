@@ -56,7 +56,7 @@ func handler(s3Event events.S3Event) error {
 		fmt.Printf("%+v\n", record)
 
 		svc := s3.New(sess)
-		obj, err := svc.GetObject(&s3.GetObjectInput{Bucket: aws.String(record.S3.Bucket.Name), Key: aws.String(record.S3.Object.Key)})
+		obj, err := svc.GetObject(&s3.GetObjectInput{Bucket: new(record.S3.Bucket.Name), Key: new(record.S3.Object.Key)})
 		if err != nil {
 			return err
 		}
