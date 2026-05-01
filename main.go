@@ -1,13 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"os"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
-	"os"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 func main() {
@@ -50,13 +51,19 @@ func handler(s3Event events.S3Event) error {
 		return err
 	}
 
-	sess := session.Must(session.NewSession(aws.NewConfig()))
+	cfg, err := config.LoadDefaultConfig(context.Background())
+	if err != nil {
+		return err
+	}
+	svc := s3.NewFromConfig(cfg)
 
 	for _, record := range s3Event.Records {
 		fmt.Printf("%+v\n", record)
 
-		svc := s3.New(sess)
-		obj, err := svc.GetObject(&s3.GetObjectInput{Bucket: new(record.S3.Bucket.Name), Key: new(record.S3.Object.Key)})
+		obj, err := svc.GetObject(context.Background(), &s3.GetObjectInput{
+			Bucket: &record.S3.Bucket.Name,
+			Key:    &record.S3.Object.Key,
+		})
 		if err != nil {
 			return err
 		}
