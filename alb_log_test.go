@@ -34,7 +34,7 @@ func Test_parseAlbLog(t *testing.T) {
 				Time: func() time.Time {
 					r, err := time.Parse(time.RFC3339, "2018-07-02T22:23:00.186641Z")
 					if err != nil {
-						t.Fatalf(err.Error())
+						t.Fatal(err)
 					}
 					return r
 				}(),
@@ -78,7 +78,7 @@ func Test_parseAlbLog(t *testing.T) {
 				Time: func() time.Time {
 					r, err := time.Parse(time.RFC3339, "2018-07-02T22:23:00.186641Z")
 					if err != nil {
-						t.Fatalf(err.Error())
+						t.Fatal(err)
 					}
 					return r
 				}(),
@@ -122,7 +122,7 @@ func Test_parseAlbLog(t *testing.T) {
 				Time: func() time.Time {
 					r, err := time.Parse(time.RFC3339, "2022-06-13T00:26:00.071316Z")
 					if err != nil {
-						t.Fatalf(err.Error())
+						t.Fatal(err)
 					}
 					return r
 				}(),

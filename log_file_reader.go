@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"golang.org/x/exp/slices"
+	"slices"
 	"io"
 	"strings"
 )

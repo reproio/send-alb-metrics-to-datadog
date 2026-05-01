@@ -1,13 +1,12 @@
 module github.com/reproio/aws-lambda-functions/functions/send-alb-metrics-to-datadog
 
-go 1.22
+go 1.26.2
 
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.59.0
 	github.com/aws/aws-lambda-go v1.54.0
 	github.com/aws/aws-sdk-go v1.40.2
 	github.com/pkg/errors v0.9.1
-	golang.org/x/exp v0.0.0-20220516143420-24438e51023a
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -18,7 +17,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/stretchr/testify v1.7.2 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.10.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
