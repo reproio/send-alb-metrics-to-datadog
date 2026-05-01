@@ -7,6 +7,11 @@
     {
       "matchManagers": ["github-actions"],
       "groupName": "github actions"
+    },
+    {
+      "matchManagers": ["gomod", "github-actions"],
+      "matchDepTypes": ["golang", "go-version"],
+      "groupName": "go version"
     }
   ]
 }
