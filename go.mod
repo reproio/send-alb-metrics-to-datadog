@@ -4,7 +4,7 @@ go 1.26.2
 
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.59.0
-	github.com/aws/aws-lambda-go v1.54.0
+	github.com/aws/aws-lambda-go v1.55.0
 	github.com/aws/aws-sdk-go-v2/config v1.32.17
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.100.1
 	github.com/pkg/errors v0.9.1
